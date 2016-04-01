@@ -1,17 +1,14 @@
 #!/bin/sh
 # 守护nginx程序
 
-ipv4=`ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6|awk '{print $2}'|tr -d "addr:"`
+ipv4=`/sbin/ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6|awk '{print $2}'|tr -d "addr:"`
 EMAIL_TO="545305338@qq.com"
 
 #可以把nginx改为其他要守护的进程名字
 
 nginx_flag=`pgrep -f nginx | wc -l`
-echo $nginx_flag
 if [ $nginx_flag -eq 0 ]
 then
-	echo -e "Server IP is : $ipv4 " | mail -s "The nginx program is Dead" $EMAIL_TO
-	/usr/local/nginx/sbin/nginx #当被守护进程不存在后，自动启动的进程。可修改
-else
-	echo "the program is running"
+        echo -e "Server IP is : $ipv4 " | mail -s "The nginx program is Dead" $EMAIL_TO
+        /usr/local/nginx/sbin/nginx #当被守护进程不存在后，自动启动的进程。可修改
 fi
